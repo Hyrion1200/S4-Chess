@@ -59,9 +59,9 @@ int rookLegal(int start, int end, int dir, struct Piece board[])
             }
             else
             {
-                for(int i = start; i > (end + MAX_RANK; i -= MAX_RANK))
+                for(int i = start; i > (end + MAX_RANK); i -= MAX_RANK)
                 {
-                    if(baord[i] != struct Piece.type.NONE)
+                    if(board[i] != struct Piece.type.NONE)
                         return 0;
                 }
             }
@@ -79,7 +79,7 @@ int rookLegal(int start, int end, int dir, struct Piece board[])
             }
             else
             {
-                for(int i = start; i > end+1; i--;)
+                for(int i = start; i > end+1; i--)
                 {
                     if(board[i] != struct Piece.type.NONE)
                         return 0;
@@ -120,7 +120,7 @@ int bishopLegal(int start, int end, int r, struct Piece board[])
         {
             if(start + (n * MAX_RANK) + n != end)
             {
-                if(board[start + (n * MAX_RANK) + n] != piece.type.NONE)
+                if(board[start + (n * MAX_RANK) + n] != Piece.type.NONE)
                 {
                     return 0;
                 }
@@ -136,7 +136,7 @@ int bishopLegal(int start, int end, int r, struct Piece board[])
         {
             if(start + (n * MAX_RANK) - n != end)
             {
-                if(board[start + (n * MAX_RANK) - n] != piece.type.NONE)
+                if(board[start + (n * MAX_RANK) - n] != Piece.type.NONE)
                 {
                     return 0;
                 }
@@ -152,7 +152,7 @@ int bishopLegal(int start, int end, int r, struct Piece board[])
         {
             if(start - (n * MAX_RANK) + n != end)
             {
-                if(board[start - (n * MAX_RANK)] + n != piece.type.NONE)
+                if(board[start - (n * MAX_RANK)] + n != Piece.type.NONE)
                 {
                     return 0;
                 }
@@ -168,7 +168,7 @@ int bishopLegal(int start, int end, int r, struct Piece board[])
         {
             if(start - (n * MAX_RANK) - n != end)
             {
-                if(board[start - (n * MAX_RANK)] - n != piece.type.NONE)
+                if(board[start - (n * MAX_RANK)] - n != Piece.type.NONE)
                 {
                     return 0;
                 }
@@ -287,7 +287,7 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
                 if(r == 3)
                     return 1;
 
-                if(piece.Color == WHITE)
+                if(Piece.color == WHITE)
                 {
                     if (r == 1)
                     {
@@ -329,7 +329,7 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
 
         case ROOK:
             int dir = rookMoves(start,end);
-            return rookLegal(start,end,dir,board)
+            return rookLegal(start,end,dir,board);
             break;
 
         case QUEEN:
@@ -343,7 +343,5 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
             int dir = kingMoves(start,end);
             return dir;
     }
-
-
-
+    return 0;
 }
