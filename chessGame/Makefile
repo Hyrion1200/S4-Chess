@@ -1,24 +1,21 @@
 # Makefile
 #
 #
-CC = gcc -fsanitize=address
-CPPFLAGS =
-CFLAGS = -Wall -Wextra -std=c99 -O0 -g3
+CC= gcc -fsanitize=address
+CPPFLAGS=
+CFLAGS= -Wall -Wextra
 LDFLAGS=
-LDLIBS =
+LDLIBS=
 
-EXE = main piece validMoves board
+SRC = main.c piece.c validMoves.c board.c
+OBJ = ${SRC:.c=.o}
+DEP = ${SRC:.c=.o}
 
-all: ${EXE}
 
-piece:
-board:
-validMoves:
-main:
-
-.PHONY: clean
+all: main
+main: $(OBJ)
 
 clean:
-	${RM} ${EXE}
+	${OBJ} ${RM} ${EXE}
 
 #END

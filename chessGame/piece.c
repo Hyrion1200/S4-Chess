@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-struct Piece createPiece(enum Type ty, enum Color co)
+struct Piece* createPiece(enum Type ty, enum Color co)
 {
     struct Piece *piece = malloc(sizeof(struct Piece));
 
@@ -10,7 +10,7 @@ struct Piece createPiece(enum Type ty, enum Color co)
     piece->color = co;
     piece->hasMoved = 0;
 
-    return *piece;
+    return piece;
 }
 
 

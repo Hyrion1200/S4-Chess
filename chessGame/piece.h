@@ -15,7 +15,8 @@ enum Type
 
 enum Color
 {
-    BLACK = 1,
+    NONEC = 0,
+    BLACK,
     WHITE,
 };
 
@@ -24,8 +25,8 @@ struct Piece
     enum Type type;
     enum Color color;
     int hasMoved;
-};
+}Piece;
 
 
-struct Piece createPiece(enum Type ty, enum Color co);
+struct Piece* createPiece(enum Type ty, enum Color co);
 #endif
