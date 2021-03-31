@@ -5,40 +5,41 @@
 
 struct Piece* board()
 {
-    struct Piece** bd = malloc(64*sizeof(struct Piece*));
+    struct Piece* bd = malloc(64* sizeof(struct Piece));
+
     // Black Pieces
-    bd[0] = createPiece(ROOK,BLACK);
-    bd[1] = createPiece(KNIGHT,BLACK);
-    bd[2] = createPiece(BISHOP,BLACK);
-    bd[3] = createPiece(QUEEN,BLACK);
-    bd[4] = createPiece(KING,BLACK);
-    bd[5] = createPiece(BISHOP,BLACK);
-    bd[6] = createPiece(KNIGHT,BLACK);
-    bd[7] = createPiece(ROOK,BLACK);
+    createPiece(bd,0,ROOK,BLACK);
+    createPiece(bd,1,KNIGHT,BLACK);
+    createPiece(bd,2,BISHOP,BLACK);
+    createPiece(bd,3,QUEEN,BLACK);
+    createPiece(bd,4,KING,BLACK);
+    createPiece(bd,5,BISHOP,BLACK);
+    createPiece(bd,6,KNIGHT,BLACK);
+    createPiece(bd,7,ROOK,BLACK);
 
     for(int i = 8; i < 16; i++)
-        bd[i] = createPiece(PAWN,BLACK);
+        createPiece(bd,i,PAWN,BLACK);
 
     for(int i = 16; i < 48; i++)
-        bd[i] = createPiece(NONE,NONEC);
+        createPiece(bd,i,NONE,NONEC);
 
     // White Pieces
-    bd[56] = createPiece(ROOK,WHITE);
-    bd[57] = createPiece(KNIGHT,WHITE);
-    bd[58] = createPiece(BISHOP,WHITE);
-    bd[59] = createPiece(QUEEN,WHITE);
-    bd[60] = createPiece(KING,WHITE);
-    bd[61] = createPiece(BISHOP,WHITE);
-    bd[62] = createPiece(KNIGHT,WHITE);
-    bd[63] = createPiece(ROOK,WHITE);
+    createPiece(bd,56,ROOK,WHITE);
+    createPiece(bd,57,KNIGHT,WHITE);
+    createPiece(bd,58,BISHOP,WHITE);
+    createPiece(bd,59,QUEEN,WHITE);
+    createPiece(bd,60,KING,WHITE);
+    createPiece(bd,61,BISHOP,WHITE);
+    createPiece(bd,62,KNIGHT,WHITE);
+    createPiece(bd,63,ROOK,WHITE);
 
-    for(int i = 48; i < 55; i++)
+    for(int i = 48; i < 56; i++)
     {
-        bd[i] = createPiece(PAWN,WHITE);
+        createPiece(bd,i,PAWN,WHITE);
     }
 
 
-    return *bd;
+    return bd;
 }
 
 void free_board(struct Piece* bd)
@@ -48,7 +49,7 @@ void free_board(struct Piece* bd)
     for (int i = 0; i < 64; i++)
     {
         printf("board i : %i\n",bd[i].type);
-        free(&bd[i]);
+        //free(bd[i]);
     }
     free(bd);
 }

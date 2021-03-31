@@ -28,5 +28,5 @@ struct Piece
 }Piece;
 
 
-struct Piece* createPiece(enum Type ty, enum Color co);
+void createPiece(struct Piece* bd, int i, enum Type ty, enum Color co);
 #endif

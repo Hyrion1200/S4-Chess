@@ -2,15 +2,12 @@
 #include <stdlib.h>
 
 
-struct Piece* createPiece(enum Type ty, enum Color co)
+void createPiece(struct Piece* bd, int i, enum Type ty, enum Color co)
 {
-    struct Piece *piece = malloc(sizeof(struct Piece));
+    bd[i].type = ty;
+    bd[i].color = co;
+    bd[i].hasMoved = 0;
 
-    piece->type = ty;
-    piece->color = co;
-    piece->hasMoved = 0;
-
-    return piece;
 }
 
 
