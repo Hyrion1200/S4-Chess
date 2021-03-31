@@ -6,12 +6,11 @@
 
 int main()
 {
-    printf("?");
     struct Piece* bd = board();
     for (size_t i = 0; i < 64; i++)
     {
         if(i%8 == 0)
-            printf("\n");
+            printf("\n|");
 
 	if(bd[i].type == 1)
 	    printf("P | ");
@@ -23,16 +22,18 @@ int main()
 	    printf("B | ");
 
 	if(bd[i].type == 4)
-	    printf("k | ");
+	    printf("N | ");
 
 	if(bd[i].type == 5)
 	    printf("Q | ");
 
 	if(bd[i].type == 6)
 	    printf("K | ");
+
+        if(bd[i].type == 0)
+            printf("  | ");
     }
 
-    //free_board(bd);
     free(bd);
     return 0;
 }

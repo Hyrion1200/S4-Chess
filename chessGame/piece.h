@@ -20,13 +20,12 @@ enum Color
     WHITE,
 };
 
-struct Piece
+typedef struct Piece
 {
     enum Type type;
     enum Color color;
     int hasMoved;
 }Piece;
-
 
 void createPiece(struct Piece* bd, int i, enum Type ty, enum Color co);
 #endif
