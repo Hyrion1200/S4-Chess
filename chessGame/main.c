@@ -31,7 +31,6 @@ int main()
 	if(bd[i].type == 6)
 	    printf("K | ");
     }
-    printf("Hey !");
 
     //free_board(bd);
     free(bd);
