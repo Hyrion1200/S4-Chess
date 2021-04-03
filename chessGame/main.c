@@ -78,7 +78,7 @@ int main()
 	    printf("Player 2, enter the coordinate where you want to move this piece : ");
 	    scanf("%d", &x2);
 
-	    if(legalMoves(bd, x1, x2, bd[x1].type))
+	    if(legalMoves(bd, x1, x2, bd[x1]))
 	    {
 	        int p = bd[x1].type;
 		bd[x1].type = 0;
