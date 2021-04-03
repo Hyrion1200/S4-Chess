@@ -290,7 +290,7 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
                 if(r == 3)
                     return 1;
 
-                if(Piece.color == WHITE)
+                if(WHITE)
                 {
                     if (r == 1)
                     {

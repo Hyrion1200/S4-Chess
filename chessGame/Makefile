@@ -1,7 +1,7 @@
 # Makefile
 #
 #
-CC= gcc -fsanitize=address
+CC= gcc
 CPPFLAGS=
 CFLAGS= -Wall -Wextra
 LDFLAGS=
