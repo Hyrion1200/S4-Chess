@@ -1,4 +1,5 @@
 #include "piece.h"
+#include <stdio.h>
 #include "validMoves.h"
 
 #define MAX_COLUMN 8
@@ -184,7 +185,7 @@ int pawnMoves(int start, int end, struct Piece pawn)
 {
     if(pawn.hasMoved) // Cannot move 2 up
     {
-        if(WHITE)
+        if(pawn.color == WHITE)
         {
             if(start - MAX_RANK == end)
                 return 1;
@@ -195,6 +196,8 @@ int pawnMoves(int start, int end, struct Piece pawn)
         }
         else // pawn is BLACK
         {
+            printf("start : %i\n",start);
+            printf("end : %i\n",end);
             if(start + MAX_RANK == end)
                 return 1;
 
@@ -207,7 +210,7 @@ int pawnMoves(int start, int end, struct Piece pawn)
     }
     else
     {
-        if(WHITE)
+        if(pawn.color == WHITE)
         {
             if(start - MAX_RANK == end || start - (2*MAX_RANK) == end)
                 return 1;
@@ -219,6 +222,9 @@ int pawnMoves(int start, int end, struct Piece pawn)
         }
         else // pawn is BLACK
         {
+            printf("start : %i\n",start);
+            printf("end : %i\n",end);
+
             if(start + MAX_RANK == end || start -(2*MAX_RANK) == end)
                 return 1;
 
@@ -285,12 +291,13 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
     {
         case PAWN:
             r = pawnMoves(start,end,piece);
+            printf("r : %i\n",r);
             if (r != 0)
             {
                 if(r == 3)
                     return 1;
 
-                if(WHITE)
+                if(piece.color == WHITE)
                 {
                     if (r == 1)
                     {
