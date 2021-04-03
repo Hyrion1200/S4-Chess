@@ -1,10 +1,10 @@
 # Makefile
 #
 #
-CC= gcc
+CC= gcc -fsanitize=address
 CPPFLAGS=
 CFLAGS= -Wall -Wextra
-LDFLAGS=
+LDFLAGS= -lm
 LDLIBS=
 
 SRC = main.c piece.c validMoves.c board.c
@@ -16,6 +16,6 @@ all: main
 main: $(OBJ)
 
 clean:
-	${OBJ} ${RM} ${EXE}
+	${RM} ${OBJ} ${OBJ_TESTS} ${DEP} ${DEP_TESTS} main && clear
 
 #END

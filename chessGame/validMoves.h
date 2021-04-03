@@ -12,5 +12,9 @@ int knightMoves(int start, int end); // same
 
 int queenMoves(int start, int end); // same
 
-int kingMoves(int start, int end);
+int kingMoves(int start, int end); // return 1 if the move CAN be legal, 0 otherwise
+                                   // return 2 if castle
+                                   //
+int legalMoves(struct Piece* board, int start, int end, struct Piece piece);
+
 #endif
