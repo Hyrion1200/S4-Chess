@@ -6,9 +6,10 @@ typedef struct Move
     int start;
     int end;
     int value;
-}Move
+}
 
-Move initMove();
+struct Move initMove();
+struct Move makeMove(struct Piece* bd, int x1, int x2);
 
 
 

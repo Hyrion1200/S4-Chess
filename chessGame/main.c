@@ -1,6 +1,7 @@
 #include "board.h"
 #include "piece.h"
 #include "validMoves.h"
+#include "moves.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,7 +10,7 @@ int main()
     struct Piece* bd = board();
     int n = 1;
     
-    while(n < 4)
+    while(1)
     {
         for (size_t i = 0; i < 64; i++)
 	{
@@ -52,18 +53,7 @@ int main()
 	    printf("Player 1, enter the coordinate where you want to move this piece : ");
 	    scanf("%d", &x2);
 
-	    if(legalMoves(bd, x1, x2, bd[x1]))
-	    {
-	        int p = bd[x1].type;
-		bd[x1].type = 0;
-		bd[x2].type = p;
-		n += 1;
-	    }
-
-	    else
-	    {
-	        printf("Illegal move");
-	    }
+	    makeMove(bd, x1, x2);
 	}
 
 	else
@@ -78,18 +68,7 @@ int main()
 	    printf("Player 2, enter the coordinate where you want to move this piece : ");
 	    scanf("%d", &x2);
 
-	    if(legalMoves(bd, x1, x2, bd[x1]))
-	    {
-	        int p = bd[x1].type;
-		bd[x1].type = 0;
-		bd[x2].type = p;
-		n += 1;
-	    }
-
-	    else
-	    {
-	        printf("Illegal move");
-	    }
+	    makeMove(bd, x1, x2);
 	}
     }
 
