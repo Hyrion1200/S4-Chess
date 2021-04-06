@@ -3,7 +3,7 @@
 //#include "../board.h"
 //#include "../piece.h"
 
-Move* movesGeneration(Chess chess, int *size);
+Move* movesGenerations(Chess chess);
 
 int squareGeneration(struct Piece* board,int square);
 

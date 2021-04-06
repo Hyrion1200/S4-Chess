@@ -52,7 +52,7 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
         case 1:
             if(start < end)
             {
-                for(int i = start; i < (end - MAX_RANK); i += MAX_RANK)
+                for(int i = start + MAX_RANK; i < end; i += MAX_RANK)
                 {
                     if(board[i].type != NONE)
                         return 0;
@@ -60,8 +60,10 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
             }
             else
             {
-                for(int i = start; i > (end + MAX_RANK); i -= MAX_RANK)
+                //printf("start %i and end %i\n",start,end);
+                for(int i = start-8; i > end; i -= 8)
                 {
+                    //printf("start: %i and end : %i || i : %i || board type %i\n",start, end, i, board[i].type);
                     if(board[i].type != NONE)
                         return 0;
                 }
@@ -72,7 +74,7 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
         case 2:
             if(start < end)
             {
-                for(int i = start; i < end-1; i++)
+                for(int i = start+1; i < end; i++)
                 {
                     if(board[i].type != NONE)
                         return 0;
@@ -80,7 +82,7 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
             }
             else
             {
-                for(int i = start; i > end+1; i--)
+                for(int i = start-1; i > end; i--)
                 {
                     if(board[i].type != NONE)
                         return 0;
@@ -97,16 +99,38 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
 int bishopMoves(int start,int end)
 {
     int n = 1;
+
+    int b1 = 1;
+    int b2 = 1;
+    int b3 = 1;
+    int b4 = 1;
+
     for(int i = start; i < MAX_RANK; i += MAX_RANK)
     {
-        if(start + (n * MAX_RANK) + n == end)
+        int x1 = start + (n*MAX_RANK) + n;
+        int x2 = start + (n*MAX_RANK) - n;
+        int x3 = start - (n*MAX_RANK) + n;
+        int x4 = start - (n*MAX_RANK) - n;
+
+        if(x1 == end && b1)
             return 1;
-        if(start + (n * MAX_RANK) - n == end)
+        if(x2 == end && b2)
             return 2;
-        if(start - (n * MAX_RANK) + n == end)
+        if(x3 == end && b3)
             return 3;
-        if(start - (n * MAX_RANK) - n == end)
+        if(x4 == end && b4)
             return 4;
+
+        // it is not the end
+        // if we are on the edge of the board with must prevent this direction
+        if(x1 % 8 == 7 || x1 < 8) // Right edge or Top edge
+            b1 = 0;
+        if(x2 % 8 == 0 || x1 < 8) // Left edge or Top edge
+            b2 = 0;
+        if(x3 % 8 == 7 || x1 > 55) // Right edge or Bottom edge
+            b3 = 0;
+        if(x4 % 8 == 0 || x1 > 55) // Left edge or Bottom edge
+            b4 = 0;
         n++;
     }
     return 0;
@@ -183,6 +207,8 @@ int bishopLegal(int start, int end, int r, struct Piece board[])
 
 int pawnMoves(int start, int end, struct Piece pawn)
 {
+    //printf("start : %i\n",start);
+    //printf("end : %i\n",end);
     if(pawn.hasMoved) // Cannot move 2 up
     {
         if(pawn.color == WHITE)
@@ -192,18 +218,16 @@ int pawnMoves(int start, int end, struct Piece pawn)
 
             //Take a piece
             if(start - MAX_RANK - 1 == end || start - MAX_RANK + 1 == end)
-                return 1;
+                return 2;
         }
         else // pawn is BLACK
         {
-            printf("start : %i\n",start);
-            printf("end : %i\n",end);
             if(start + MAX_RANK == end)
                 return 1;
 
             // Take a piece
             if(start + MAX_RANK - 1 == end || start + MAX_RANK + 1 == end)
-                return 1;
+                return 2;
 
         }
         return 0;
@@ -217,20 +241,17 @@ int pawnMoves(int start, int end, struct Piece pawn)
 
             //Take a piece
             if(start - MAX_RANK - 1 == end || start - MAX_RANK + 1 == end)
-                return 1;
+                return 2;
 
         }
         else // pawn is BLACK
         {
-            printf("start : %i\n",start);
-            printf("end : %i\n",end);
-
             if(start + MAX_RANK == end || start -(2*MAX_RANK) == end)
                 return 1;
 
             // Take a piece
             if(start + MAX_RANK - 1 == end || start + MAX_RANK + 1 == end)
-                return 1;
+                return 2;
 
 
         }
@@ -257,16 +278,21 @@ int knightMoves(int start, int end)
     return 0;
 }
 
-int queenMoves(int start, int end)
+int queenMoves(int start, int end,Piece* board)
 {
     int b = bishopMoves(start,end);
     int r = rookMoves(start,end);
 
-    return (b || r);
+    if(b)
+        return bishopLegal(start,end,b,board);
+    if(r)
+        return rookLegal(start,end,r,board);
+    return b + r;
 }
 
 int kingMoves(int start, int end)
 {
+
     if(start + 1 == end || start - 1 == end)
         return 1;
 
@@ -285,13 +311,15 @@ int kingMoves(int start, int end)
 int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
 {
     int dir;
-    int b;
     int r;
+    if(board[start].color == board[end].color && piece.type != KING)
+        return 0;
+
     switch(piece.type)
     {
         case PAWN:
             r = pawnMoves(start,end,piece);
-            printf("r : %i\n",r);
+            //printf("r : %i\n",r);
             if (r != 0)
             {
                 if(r == 3)
@@ -301,12 +329,14 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
                 {
                     if (r == 1)
                     {
-                        if(board[start - MAX_RANK].type == NONE)
+                        if(board[start - MAX_RANK].type == NONE ||
+                                board[start - 2*MAX_RANK].type == NONE)
                             return 1;
                     }
                     if(r == 2)
                     {
-                        if(board[start - 2*MAX_RANK].type == NONE)
+                        if(board[start - MAX_RANK + 1].type != NONE ||
+                                board[start- MAX_RANK - 1].type != NONE)
                             return 1;
                     }
                 }
@@ -343,10 +373,12 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
             break;
 
         case QUEEN:
-            dir = queenMoves(start,end);
-            b = bishopLegal(start,end,dir,board);
-            r = rookLegal(start,end,dir,board);
-            return b || r;
+            dir = queenMoves(start,end,board);
+            //b = bishopLegal(start,end,dir,board);
+            //r = rookLegal(start,end,dir,board);
+            //printf("start %i, end %i\n",start,end);
+            //printf("dir : %i\n",dir);
+            return dir;
             break;
 
         case KING:

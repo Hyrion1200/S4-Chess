@@ -1,16 +1,21 @@
 # Makefile
 #
 #
+bin = Chess.exe
+
+SRC = main.c piece.c validMoves.c board.c moves.c visual.c AI/movesGen.c AI/chessAI.c 
+
 CC= gcc -fsanitize=address
 CPPFLAGS=
-CFLAGS= -Wall -Wextra
+CFLAGS= -Wall -Wextra -fsanitize=address
 LDFLAGS= -lm
 LDLIBS=
 
-SRC = main.c piece.c validMoves.c board.c
 OBJ = ${SRC:.c=.o}
-DEP = ${SRC:.c=.o}
+DEP = ${SRC:.c=.d}
 
+#$(bin): $(SRC)
+#	$(CC) $(SRC) $(CFLAGS) $(LDFLAGS) -o $(bin)
 
 all: main
 main: $(OBJ)

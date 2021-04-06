@@ -15,8 +15,7 @@ enum Type
 
 enum Color
 {
-    NONEC = 0,
-    BLACK,
+    BLACK = 0,
     WHITE,
 };
 

@@ -1,39 +1,38 @@
-#include "../piece.h"
-#include "../moves.h"
-#include "chess.h"
-#include "../validMoves.h"
+#include "piece.h"
+#include "moves.h"
+#include "validMoves.h"
 #include <stdlib.h>
-#include "../board.h"
-#include <stdio.h>
+#include "board.h"
+
 
 #define MAX_RANK 8
 
 
-Move* movesGeneration(Chess chess, int *size)
+Move* movesGeneration(Chess chess)
 {
+    int size = 0;
     Move* moves = malloc(208*sizeof(Move));
 
     for(int i = 0; i < 64; i++)
     {
-        struct Piece p = chess.board[i];
-        if((int)p.color == chess.turn && p.type)
+        struct Piece *p = chess.board[i];
+        if((int)p->color == chess.turn)
         {
             int start = i;
             for(int j = 0; j < 64; j++)
             {
-                if(legalMoves(chess.board,start,j,p))
+                if(legalMoves(*chess.board,start,j,*p))
                 {
                     Move new = initMove();
                     new.start = start;
-                    new.end = j;
-                    moves[*size] = new;
-                    *size += 1;
+                    new.end = start - MAX_RANK;
+                    moves[size] = new;
+                    size++;
                 }
 
             }
         }
     }
-    //printf("Size of possible moves : %i\n",*size);
     return moves;
 }
 

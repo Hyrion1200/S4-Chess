@@ -21,7 +21,7 @@ struct Piece* board()
         createPiece(bd,i,PAWN,BLACK);
 
     for(int i = 16; i < 48; i++)
-        createPiece(bd,i,NONE,NONEC);
+        createPiece(bd,i,NONE,BLACK); // BLACK = 0 -> default color for pieces
 
     // White Pieces
     createPiece(bd,56,ROOK,WHITE);

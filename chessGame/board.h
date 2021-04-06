@@ -4,4 +4,15 @@
 struct Piece* board();
 void free_board(struct Piece* board);
 
+typedef struct Chess
+{
+    struct Piece* board;
+    int nbPieces;
+    int turn;
+    int WC; // White Castle
+    int BC; // Black Castle
+}Chess;
+
+
+
 #endif
