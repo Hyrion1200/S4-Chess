@@ -30,7 +30,7 @@ void makeMove(Chess *chess, int x1, int x2)
     //printf("piece %i\n", chess->board[x1].type);
     if(legalMoves(chess->board, x1, x2, chess->board[x1]))
     {
-               if(chess->board[x2].type == 0)
+        if(chess->board[x2].type == 0)
 	{
             //printf("inHere\n");
             chess->board[x2].type = chess->board[x1].type;

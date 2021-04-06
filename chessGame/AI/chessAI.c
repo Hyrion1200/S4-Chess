@@ -244,7 +244,6 @@ Move selectMove(Chess *chess, int depth, int turn)
         memcpy(chessCpy,chess,sizeof(Chess));
 
         chessCpy->board = bdCpy;
-
         makeMove(chessCpy,moves[i].start,moves[i].end);
 
         int boardValue = minmax(chessCpy,1,depth-1,-INF,INF);
@@ -258,6 +257,9 @@ Move selectMove(Chess *chess, int depth, int turn)
         free(chessCpy);
     }
     free(moves);
+
+    printf("Color : %i\n",chess->turn);
+    printf("move start : %i and end : %i\n",bestMove.start,bestMove.end);
     return bestMove;
 
 }

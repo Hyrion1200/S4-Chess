@@ -218,7 +218,7 @@ int pawnMoves(int start, int end, struct Piece pawn)
 
             //Take a piece
             if(start - MAX_RANK - 1 == end || start - MAX_RANK + 1 == end)
-                return 2;
+                return 3;
         }
         else // pawn is BLACK
         {
@@ -227,7 +227,7 @@ int pawnMoves(int start, int end, struct Piece pawn)
 
             // Take a piece
             if(start + MAX_RANK - 1 == end || start + MAX_RANK + 1 == end)
-                return 2;
+                return 3;
 
         }
         return 0;
@@ -241,17 +241,17 @@ int pawnMoves(int start, int end, struct Piece pawn)
 
             //Take a piece
             if(start - MAX_RANK - 1 == end || start - MAX_RANK + 1 == end)
-                return 2;
+                return 3;
 
         }
         else // pawn is BLACK
         {
-            if(start + MAX_RANK == end || start -(2*MAX_RANK) == end)
+            if(start + MAX_RANK == end || start +(2*MAX_RANK) == end)
                 return 1;
 
             // Take a piece
             if(start + MAX_RANK - 1 == end || start + MAX_RANK + 1 == end)
-                return 2;
+                return 3;
 
 
         }
@@ -312,19 +312,35 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
 {
     int dir;
     int r;
-    if(board[start].color == board[end].color && piece.type != KING)
-        return 0;
+    //if((board[start].color == board[end].color && board[end].type == NONE) && piece.type != KING)
+     //   return 0;
 
     switch(piece.type)
     {
         case PAWN:
             r = pawnMoves(start,end,piece);
-            //printf("r : %i\n",r);
             if (r != 0)
             {
                 if(r == 3)
-                    return 1;
+                {
+                    //printf("start : %i and end %i\n",start,end);
+                    if(piece.color == BLACK)
+                    {
+                        if(board[start + MAX_RANK + 1].type != NONE && start % 8 != 7)
+                            return 1;
+                        if(board[start + MAX_RANK - 1].type != NONE && start % 8 != 0)
+                            return 1;
+                    }
+                    else
+                    {
+                        if(board[start - MAX_RANK + 1].type != NONE && start % 8 != 7)
+                            return 1;
+                        if(board[start - MAX_RANK - 1].type != NONE && start % 8 != 0)
+                            return 1;
 
+                    }
+                    return 0;
+                }
                 if(piece.color == WHITE)
                 {
                     if (r == 1)
@@ -342,7 +358,7 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
                 }
                 else
                 {
-                     if (r == 1)
+                    if (r == 1)
                     {
                         if(board[start + MAX_RANK].type == NONE)
                             return 1;

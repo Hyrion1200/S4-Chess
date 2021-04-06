@@ -7,11 +7,11 @@
 #include <stdio.h>
 
 #define MAX_RANK 8
-
+#define MAX_MOVE 256
 
 Move* movesGeneration(Chess chess, int *size)
 {
-    Move* moves = malloc(208*sizeof(Move));
+    Move* moves = malloc(MAX_MOVE*sizeof(Move));
 
     for(int i = 0; i < 64; i++)
     {
@@ -33,6 +33,7 @@ Move* movesGeneration(Chess chess, int *size)
             }
         }
     }
+    //printf("Chess turn : %i\n",chess.turn);
     //printf("Size of possible moves : %i\n",*size);
     return moves;
 }

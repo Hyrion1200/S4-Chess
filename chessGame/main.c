@@ -58,10 +58,19 @@ int main()
 
 	    makeMove(chess, x1, x2);
 	}*/
-        Move mv = selectMove(chess,1,chess->turn);
+        if(n != 1)
+        {
+        Move mv = selectMove(chess,2,chess->turn);
         //printf("\nNew Move-------------------\n");
         makeMove(chess,mv.start,mv.end);
         n++;
+        }
+        else
+        {
+            if(legalMoves(chess->board,10,18,chess->board[10]))
+                makeMove(chess,10,18);
+            n++;
+        }
         sleep(1);
     }
     printBoard(chess->board);
