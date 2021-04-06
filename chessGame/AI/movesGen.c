@@ -21,7 +21,7 @@ Move* movesGeneration(Chess chess, int *size)
             int start = i;
             for(int j = 0; j < 64; j++)
             {
-                if(legalMoves(chess.board,start,j,p))
+                if(legalMoves(chess.board,start,j,p) && i != j )
                 {
                     Move new = initMove();
                     new.start = start;
