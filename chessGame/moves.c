@@ -66,7 +66,8 @@ void makeMove(Chess *chess, int x1, int x2)
             printf("start type : %i at %i\n",chess->board[x1].type, x1);
             printf("end type : %i at %i\n",chess->board[x2].type, x2);
             printf("color1: %i // color2: %i\n",chess->board[x1].color,chess->board[x2].color);
-            */chess->nbPieces -= 1;
+            */
+            chess->nbPieces -= 1;
             chess->board[x2].type = chess->board[x1].type;
             chess->board[x2].color = chess->board[x1].color;
             chess->board[x2].hasMoved = 1;

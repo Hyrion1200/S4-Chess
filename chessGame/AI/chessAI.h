@@ -14,9 +14,9 @@ extern const int queenstable[];
 
 extern const int kingstable[];
 
-int minmax(Chess *chess, int alt, int depth, int alpha, int beta);
+int minmax(Chess *chess, int alt, int depth, int alpha, int beta, long* nodes);
 int evaluateBoard(struct Piece* board, int bonus);
-Move selectMove(Chess *chess, int depth, int turn);
+Move selectMove(Chess *chess, int depth);
 
 //static int piecesValues[5] = {100,320,330,500,900};
 

@@ -11,6 +11,8 @@
 
 Move* movesGeneration(Chess chess, int *size)
 {
+    int nbP = 0;
+    int nbN = 0;
     Move* moves = malloc(MAX_MOVE*sizeof(Move));
 
     for(int i = 0; i < 64; i++)
@@ -23,6 +25,14 @@ Move* movesGeneration(Chess chess, int *size)
             {
                 if(legalMoves(chess.board,start,j,p) && i != j )
                 {
+                    if(p.type == PAWN)
+                        nbP += 1;
+                    if(p.type == KNIGHT)
+                        nbN += 1;
+                    /*if(p.type != PAWN && p.type != KNIGHT)
+                    {
+                        printf("start : %i and end %i\n",i,j);
+                    }*/
                     Move new = initMove();
                     new.start = start;
                     new.end = j;
@@ -33,6 +43,7 @@ Move* movesGeneration(Chess chess, int *size)
             }
         }
     }
+    //printf("nbP : %i and nbK : %i\n",nbP,nbN);
     //printf("Chess turn : %i\n",chess.turn);
     //printf("Size of possible moves : %i\n",*size);
     return moves;

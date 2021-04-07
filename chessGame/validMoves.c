@@ -261,6 +261,17 @@ int pawnMoves(int start, int end, struct Piece pawn)
 
 int knightMoves(int start, int end)
 {
+    if(end > start) // prevent knight from doing weird movements
+    {
+        if(end - start < MAX_RANK)
+            return 0;
+    }
+    else
+    {
+        if(start - end < MAX_RANK)
+            return 0;
+    }
+    //
     if(start + 2*MAX_RANK + 1 == end || start + 2*MAX_RANK - 1 == end)
         return 1;
 
@@ -314,7 +325,11 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
     int r;
     //if((board[start].color == board[end].color && board[end].type == NONE) && piece.type != KING)
      //   return 0;
-
+    if(board[start].type != NONE && board[end].type != NONE)
+    {
+        if(board[start].color == board[end].color)
+            return 0;
+    }
     switch(piece.type)
     {
         case PAWN:
@@ -352,7 +367,7 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
                     if(r == 2)
                     {
                         if(board[start - MAX_RANK + 1].type != NONE ||
-                                board[start- MAX_RANK - 1].type != NONE)
+                                board[start - MAX_RANK - 1].type != NONE)
                             return 1;
                     }
                 }

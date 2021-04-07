@@ -11,8 +11,17 @@
 int main()
 {
     struct Piece* bd = board();
+    struct Piece* bd2 = board();
+    struct Piece* bd3 = board();
 
     Chess* chess = malloc(sizeof(Chess));
+    Chess* chess2 = malloc(sizeof(Chess));
+    Chess* chess3 = malloc(sizeof(Chess));
+    chess2->board = bd2;
+    chess2->turn = 1;
+    chess3->board = bd3;
+    chess3->turn = 1;
+
     chess->board = bd;
     chess->nbPieces = 32;
     chess->turn = 1;
@@ -20,61 +29,37 @@ int main()
     chess->BC = 0;
 
     int n = 0;
-    while(1)
+    while(n == 0)
     {
         printBoard(chess->board);
-
-	/*if(chess->turn)
-	{
-	    int x1;
-
-	    int x2;
-
-	    printf("Player 1, enter the coordinate of the piece you want to move : ");
-	    scanf("%d", &x1);
-
-	    printf("Player 1, enter the coordinate where you want to move this piece : ");
-	    scanf("%d", &x2);
-
-            printf("start : %i\n",x1);
-            printf("end : %i\n",x2);
-	    printf("type : %i\n",chess->board[x1].type);
-            makeMove(chess, x1, x2);
-            printf("type : %i\n", chess->board[x1].type);
-            printf("type : %i\n", chess->board[x2].type);
-	}
-
-	else
-	{
-	    int x1;
-
-	    int x2;
-
-	    printf("Player 2, enter the coordinate of the piece you want to move : ");
-	    scanf("%d", &x1);
-
-	    printf("Player 2, enter the coordinate where you want to move this piece : ");
-	    scanf("%d", &x2);
-
-	    makeMove(chess, x1, x2);
-	}*/
-        if(n != 1)
-        {
-        Move mv = selectMove(chess,2,chess->turn);
-        //printf("\nNew Move-------------------\n");
+        Move mv = selectMove(chess,1);
         makeMove(chess,mv.start,mv.end);
+
+        printf("---------------------------\n");
+        printBoard(chess2->board);
+        Move mv2 = selectMove(chess2,2);
+        makeMove(chess2,mv2.start,mv2.end);
+
+        printf("---------------------------\n");
+        printBoard(chess3->board);
+        Move mv3 = selectMove(chess3,3);
+        makeMove(chess3,mv3.start,mv3.end);
+
         n++;
-        }
-        else
+        /*if(n = 1)
         {
             if(legalMoves(chess->board,10,18,chess->board[10]))
                 makeMove(chess,10,18);
             n++;
-        }
+        }*/
         sleep(1);
     }
     printBoard(chess->board);
     free(bd);
+    free(bd2);
+    free(bd3);
+    free(chess2);
+    free(chess3);
     free(chess);
     return 0;
 }

@@ -12,7 +12,7 @@
 #define INF 9999
 
 //region tables
-const int pawnstable[64] = {
+const int pawnstableB[64] = {
     0,  0,  0,  0,  0,  0,  0,  0,
     5, 10, 10,-20,-20, 10, 10,  5,
     5, -5,-10,  0,  0,-10, -5,  5,
@@ -22,7 +22,17 @@ const int pawnstable[64] = {
     50, 50, 50, 50, 50, 50, 50, 50,
     0,  0,  0,  0,  0,  0,  0,  0};
 
-const int knightstable[64] = {
+const int pawnstable[64] = {
+    0,  0,  0,  0,  0,  0,  0,  0,
+    50, 50, 50, 50, 50, 50, 50, 50,
+    10, 10, 20, 30, 30, 20, 10, 10,
+    5,  5, 10, 25, 25, 10,  5,  5,
+    0,  0,  0, 20, 20,  0,  0,  0,
+    5, -5,-10,  0,  0,-10, -5,  5,
+    5, 10, 10,-20,-20, 10, 10,  5,
+    0,  0,  0,  0,  0,  0,  0,  0};
+
+const int knightstableB[64] = {
     -50,-40,-30,-30,-30,-30,-40,-50,
     -40,-20,  0,  5,  5,  0,-20,-40,
     -30,  5, 10, 15, 15, 10,  5,-30,
@@ -32,7 +42,17 @@ const int knightstable[64] = {
     -40,-20,  0,  0,  0,  0,-20,-40,
     -50,-40,-30,-30,-30,-30,-40,-50};
 
-const int bishopstable[64] = {
+const int knightstable[64] = {
+    -50,-40,-30,-30,-30,-30,-40,-50,
+    -40,-20,  0,  0,  0,  0,-20,-40,
+    -30,  0, 10, 15, 15, 10,  0,-30,
+    -30,  5, 15, 20, 20, 15,  5,-30,
+    -30,  0, 15, 20, 20, 15,  0,-30,
+    -30,  5, 10, 15, 15, 10,  5,-30,
+    -40,-20,  0,  5,  5,  0,-20,-40,
+    -50,-40,-30,-30,-30,-30,-40,-50};
+
+const int bishopstableB[64] = {
     -20,-10,-10,-10,-10,-10,-10,-20,
     -10,  5,  0,  0,  0,  0,  5,-10,
     -10, 10, 10, 10, 10, 10, 10,-10,
@@ -42,7 +62,17 @@ const int bishopstable[64] = {
     -10,  0,  0,  0,  0,  0,  0,-10,
     -20,-10,-10,-10,-10,-10,-10,-20};
 
-const int rookstable[64] = {
+const int bishopstable[64] = {
+    -20,-10,-10,-10,-10,-10,-10,-20,
+    -10,  0,  0,  0,  0,  0,  0,-10,
+    -10,  0,  5, 10, 10,  5,  0,-10,
+    -10,  5,  5, 10, 10,  5,  5,-10,
+    -10,  0, 10, 10, 10, 10,  0,-10,
+    -10, 10, 10, 10, 10, 10, 10,-10,
+    -10,  5,  0,  0,  0,  0,  5,-10,
+    -20,-10,-10,-10,-10,-10,-10,-20};
+
+const int rookstableB[64] = {
     0,  0,  0,  5,  5,  0,  0,  0,
     -5,  0,  0,  0,  0,  0,  0, -5,
     -5,  0,  0,  0,  0,  0,  0, -5,
@@ -52,19 +82,40 @@ const int rookstable[64] = {
     5, 10, 10, 10, 10, 10, 10,  5,
     0,  0,  0,  0,  0,  0,  0,  0};
 
-const int queenstable[64] = {
+const int rookstable[64] = {
+     0,  0,  0,  0,  0,  0,  0,  0,
+     5, 10, 10, 10, 10, 10, 10,  5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+    -5,  0,  0,  0,  0,  0,  0, -5,
+     0,  0,  0,  5,  5,  0,  0,  0};
+
+const int queenstableB[64] = {
     -20,-10,-10, -5, -5,-10,-10,-20,
     -10,  0,  0,  0,  0,  0,  0,-10,
     -10,  5,  5,  5,  5,  5,  0,-10,
-    0,  0,  5,  5,  5,  5,  0, -5,
+     0,  0,  5,  5,  5,  5,  0, -5,
     -5,  0,  5,  5,  5,  5,  0, -5,
     -10,  0,  5,  5,  5,  5,  0,-10,
     -10,  0,  0,  0,  0,  0,  0,-10,
     -20,-10,-10, -5, -5,-10,-10,-20};
 
-const int kingstable[64] = {
-    20, 30, 10,  0,  0, 10, 30, 20,
-    20, 20,  0,  0,  0,  0, 20, 20,
+const int queenstable[64] = {
+    -20,-10,-10, -5, -5,-10,-10,-20,
+    -10,  0,  0,  0,  0,  0,  0,-10,
+    -10,  0,  5,  5,  5,  5,  0,-10,
+    -5,  0,  5,  5,  5,  5,  0, -5,
+     0,  0,  5,  5,  5,  5,  0, -5,
+    -10,  5,  5,  5,  5,  5,  0,-10,
+    -10,  0,  5,  0,  0,  0,  0,-10,
+    -20,-10,-10, -5, -5,-10,-10,-20};
+
+
+const int kingstableB[64] = {
+     20, 30, 10,  0,  0, 10, 30, 20,
+     20, 20,  0,  0,  0,  0, 20, 20,
     -10,-20,-20,-20,-20,-20,-20,-10,
     -20,-30,-30,-40,-40,-30,-30,-20,
     -30,-40,-40,-50,-50,-40,-40,-30,
@@ -72,9 +123,17 @@ const int kingstable[64] = {
     -30,-40,-40,-50,-50,-40,-40,-30,
     -30,-40,-40,-50,-50,-40,-40,-30};
 
-
-
-int minmax(Chess *chess, int alt, int depth, int alpha, int beta)
+const int kingstable[64] = {
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -30,-40,-40,-50,-50,-40,-40,-30,
+    -20,-30,-30,-40,-40,-30,-30,-20,
+    -10,-20,-20,-20,-20,-20,-20,-10,
+     20, 20,  0,  0,  0,  0, 20, 20,
+     20, 30, 10,  0,  0, 10, 30, 20};
+// end of region table
+int minmax(Chess *chess, int alt, int depth, int alpha, int beta, long* nodes)
 {
     int min = 9999;
     int max = -9999;
@@ -90,7 +149,7 @@ int minmax(Chess *chess, int alt, int depth, int alpha, int beta)
     }
     int size = 0;
     Move* moves = movesGeneration(*chess,&size);
-
+    *nodes += size;
     for (int i = 0; i < size; i++)
     {
         Move move = moves[i];
@@ -105,7 +164,7 @@ int minmax(Chess *chess, int alt, int depth, int alpha, int beta)
 
         //printf("chess board[48].type : %i\n",chessCpy->board[48].type);
         makeMove(chessCpy,move.start,move.end);
-        int value = minmax(chessCpy, !alt, depth-1, alpha, beta);
+        int value = minmax(chessCpy, !alt, depth-1, alpha, beta,nodes);
         if (value > max)
         {
             max = value;
@@ -193,32 +252,32 @@ int evaluateBoard(struct Piece* board, int bonus)
             if(piece.type == PAWN)
             {
                 bp++;
-                pawnsq -= pawnstable[i];
+                pawnsq -= pawnstableB[i];
             }
             if(piece.type == KNIGHT)
             {
                 bn++;
-                knightsq -= knightstable[i];
+                knightsq -= knightstableB[i];
             }
             if(piece.type == BISHOP)
             {
                 bb++;
-                bishopsq -= bishopstable[i];
+                bishopsq -= bishopstableB[i];
             }
             if(piece.type == ROOK)
             {
                 br++;
-                rooksq -= rookstable[i];
+                rooksq -= rookstableB[i];
             }
             if(piece.type == QUEEN)
             {
                 bq++;
-                queensq -= queenstable[i];
+                queensq -= queenstableB[i];
             }
             if(piece.type == KING)
             {
                 bk++;
-                kingsq -= kingstable[i];
+                kingsq -= kingstableB[i];
             }
         }
     }
@@ -229,13 +288,15 @@ int evaluateBoard(struct Piece* board, int bonus)
     return boardValue;
 }
 
-Move selectMove(Chess *chess, int depth, int turn)
+Move selectMove(Chess *chess, int depth)
 {
     Move bestMove = initMove();
     int size = 0;
+    long nodes = 0;
     // generate moves
     Move* moves = movesGeneration(*chess,&size);
-    //
+    printf("Number of moves : %i\n",size);
+    nodes += size;
     for (int i = 0; i < size; i++)
     {
         Chess *chessCpy = malloc(sizeof(Chess));
@@ -246,7 +307,7 @@ Move selectMove(Chess *chess, int depth, int turn)
         chessCpy->board = bdCpy;
         makeMove(chessCpy,moves[i].start,moves[i].end);
 
-        int boardValue = minmax(chessCpy,1,depth-1,-INF,INF);
+        int boardValue = minmax(chessCpy,1,depth-1,-INF,INF,&nodes);
         //unmake_move(board); // TODO
         if (boardValue >= bestMove.value)
         {
@@ -254,10 +315,12 @@ Move selectMove(Chess *chess, int depth, int turn)
             bestMove.end = moves[i].end;
             bestMove.value = boardValue;
         }
+        free(bdCpy);
         free(chessCpy);
+
     }
     free(moves);
-
+    printf("nodes parcourues : %ld\n",nodes);
     printf("Color : %i\n",chess->turn);
     printf("move start : %i and end : %i\n",bestMove.start,bestMove.end);
     return bestMove;
