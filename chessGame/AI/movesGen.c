@@ -28,7 +28,10 @@ Move* movesGeneration(Chess chess, int *size)
                     if(p.type == PAWN)
                         nbP += 1;
                     if(p.type == KNIGHT)
+                    {
                         nbN += 1;
+                        //printf("move start %i and end %i\n",i,j);
+                    }
                     /*if(p.type != PAWN && p.type != KNIGHT)
                     {
                         printf("start : %i and end %i\n",i,j);
@@ -49,17 +52,23 @@ Move* movesGeneration(Chess chess, int *size)
     return moves;
 }
 
-int squareGeneration(Piece* board, int square)
+int squareGeneration(Piece* board, int square, int preMove)
 {
+    // how many pieces except the one who should go on square
+    // can go on square
+
     int nb = 0;
 
     for(int i = 0; i < 64; i++)
     {
-        if(board[i].type != NONE)
+        if(board[i].color != board[preMove].color)
         {
-            if(legalMoves(board,i,square,board[i]))
+            if(board[i].type != NONE && i != preMove && board[i].type != KING)
             {
-                nb++;
+                if(legalMoves(board,i,square,board[i]))
+                {
+                    nb++;
+                }
             }
         }
     }
