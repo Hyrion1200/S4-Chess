@@ -11,7 +11,7 @@ typedef struct Move
 
 struct Move initMove();
 void makeMove(Chess *chess, int x1, int x2);
-
+void makeMoveStats(Chess *chess, int x1, int x2);
 
 
 #endif

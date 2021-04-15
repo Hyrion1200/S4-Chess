@@ -17,4 +17,5 @@ int kingMoves(int start, int end); // return 1 if the move CAN be legal, 0 other
                                    //
 int legalMoves(struct Piece* board, int start, int end, struct Piece piece);
 
+int checkmate(Chess *chess); // Return true if the board is checkmate
 #endif
