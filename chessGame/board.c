@@ -39,6 +39,46 @@ struct Piece* board()
     }
 
 
+    //bd->wk = 60;
+    //bd->bk = 4;
+    return bd;
+}
+
+struct Piece* boardBishop()
+{
+    struct Piece* bd = malloc(64* sizeof(struct Piece));
+    for(int i = 0; i < 64; i++)
+        createPiece(bd,i,NONE,BLACK);
+
+    bd[2].type = BISHOP;
+    bd[5].type = BISHOP;
+
+    bd[58].type = BISHOP;
+    bd[58].color = WHITE;
+    bd[61].type = BISHOP;
+    bd[61].color = WHITE;
+
+    return bd;
+}
+
+struct Piece* boardCastle()
+{
+    struct Piece* bd = malloc(64* sizeof(struct Piece));
+    for(int i = 0; i < 64; i++)
+        createPiece(bd,i,NONE,BLACK);
+
+    bd[0].type = ROOK;
+    bd[4].type = KING;
+    bd[7].type = ROOK;
+
+    bd[56].type = ROOK;
+    bd[56].color = WHITE;
+    bd[60].type = KING;
+    bd[60].color = WHITE;
+
+    bd[63].type = ROOK;
+    bd[63].color = WHITE;
+
     return bd;
 }
 

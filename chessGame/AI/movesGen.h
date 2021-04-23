@@ -5,7 +5,7 @@
 #include "../moves.h"
 Move* movesGeneration(Chess chess, int *size);
 
-int squareGeneration(struct Piece* board,int square, int preMove);
+int squareGeneration(Chess chess,int square, int preMove);
 
 
 #endif

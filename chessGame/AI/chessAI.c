@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../moves.h"
+#include "../validMoves.h"
 #include <stdio.h>
 #include "movesGen.h"
 #include "chessAI.h"
@@ -140,7 +141,6 @@ int minmax(Chess *chess, int isWhite, int depth, int alpha, int beta, long* node
         int bonus = 0;
         if(chess->WC)
         {
-            printf("BONUS\n");
             bonus += 5000;
         }
         if(chess->BC)
@@ -177,6 +177,48 @@ int minmax(Chess *chess, int isWhite, int depth, int alpha, int beta, long* node
 
     free(moves);
     return alpha;
+}
+
+int negamax(Chess *chess,int depth, long* nodes)
+{
+    if (depth == 0)
+    {
+        int bonus = 0;
+        if(chess->WC)
+        {
+            bonus += 50;
+        }
+        if(chess->BC)
+            bonus -= 50;
+
+        return evaluateBoard(chess->board,bonus);
+    }
+    int size = 0;
+    Move* moves = movesGeneration(*chess,&size);
+    *nodes += size;
+
+    int best = -INF;
+    for(int i = 0; i < size; i++)
+    {
+
+        Move move = moves[i];
+        Chess *chessCpy = malloc(sizeof(Chess));
+        Piece* bdCpy = malloc(64*sizeof(Piece));
+        memcpy(bdCpy,chess->board,64*sizeof(Piece));
+        memcpy(chessCpy,chess,sizeof(Chess));
+        chessCpy->board = bdCpy;
+
+        makeMove(chessCpy,move.start,move.end);
+        int val = -negamax(chessCpy,depth-1,nodes);
+
+        if(val > best)
+            best = val;
+        free(bdCpy);
+        free(chessCpy);
+    }
+
+    free(moves);
+    return best;
 }
 
 int evaluateBoard(struct Piece* board, int bonus)
@@ -272,10 +314,12 @@ int evaluateBoard(struct Piece* board, int bonus)
     }
 
     int material = 100*(wp-bp) + 320*(wn-bn) + 330*(wb-bb) + 500*(wr-br) + 900*(wq-bq);
-    //int boardValue = material + pawnsq + knightsq + bishopsq + rooksq + queensq + kingsq + bonus;
+    int boardValue = material + pawnsq + knightsq + bishopsq + rooksq + queensq + kingsq + bonus;
     //printf("boardValue : %i\n",boardValue);
-    //return boardValue;
-    return material + bonus;
+    return boardValue;
+//    if(bonus)
+//        printf("eval with castle : %i  [C : %i]\n",material + bonus,bonus);
+//    return material + bonus;
 }
 
 Move selectMove(Chess *chess, int depth, int alpha, int beta)
@@ -291,8 +335,12 @@ Move selectMove(Chess *chess, int depth, int alpha, int beta)
     for (int i = 0; i < size; i++)
     {
         printf(" %i |",chess->board[moves[i].start].type);
-        if(chess->board[moves[i].start].type == 3)
+        /*if(chess->board[moves[i].start].type == 3)
             printf(" start : %i and end %i |||",moves[i].start,moves[i].end);
+
+        if(chess->board[moves[i].start].type == 6)
+            printf(" start : %i and end %i |||", moves[i].start,moves[i].end);
+        */
         Chess *chessCpy = malloc(sizeof(Chess));
         Piece* bdCpy = malloc(64*sizeof(Piece));
         memcpy(bdCpy,chess->board,64*sizeof(Piece));
@@ -301,7 +349,7 @@ Move selectMove(Chess *chess, int depth, int alpha, int beta)
         chessCpy->board = bdCpy;
         makeMove(chessCpy,moves[i].start,moves[i].end);
 
-        int boardValue = -minmax(chessCpy,chess->turn,depth-1,-beta, -alpha,&nodes);
+        int boardValue = -negamax(chessCpy,depth-1,&nodes);
 
         if (boardValue >= bestMove.value)
         {
@@ -312,10 +360,10 @@ Move selectMove(Chess *chess, int depth, int alpha, int beta)
         free(bdCpy);
         free(chessCpy);
 
-        if(bestMove.value > alpha)
+        /*if(bestMove.value > alpha)
             alpha = bestMove.value;
         if (beta <= alpha)
-            break;
+            break;*/
     }
     free(moves);
     printf("\nnodes parcourues : %ld\n",nodes);
@@ -341,11 +389,11 @@ int perft(Chess* chess, int depth)
 
         chessCpy->board = bdCpy;
         makeMove(chessCpy,moves[i].start,moves[i].end);
-
+        chessCpy->check = check(*chessCpy,chessCpy->turn);
         nodes += perft(chessCpy,depth-1);
 
     }
-
+    free(moves);
     return nodes;
 
 }
@@ -354,7 +402,7 @@ int perft(Chess* chess, int depth)
 
 int squareAttacked(Chess* chess,int start)
 {
-    int nb = squareGeneration(chess->board,start,start);
+    int nb = squareGeneration(*chess,start,start);
     return nb;
 }
 

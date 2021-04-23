@@ -23,7 +23,7 @@ void makeMove(Chess *chess, int x1, int x2)
     else
         chess->turn = 1;
 
-    if(legalMoves(chess->board, x1, x2, chess->board[x1]))
+    if(legalMoves(*chess, x1, x2, chess->check))
     {
         if(chess->board[x2].type == 0)
 	{
@@ -33,8 +33,11 @@ void makeMove(Chess *chess, int x1, int x2)
             chess->board[x1].type = 0;
 	}
         else
-        if(chess->board[x1].type == KING && chess->board[x2].type == ROOK)
+        if(chess->board[x1].type == KING && chess->board[x2].type == ROOK &&
+                !chess->board[x1].hasMoved && !chess->board[x2].hasMoved)
         {
+//            printf("start % i , end % i\n",x1,x2);
+
             if(chess->board[x1].color)
                 chess->WC = 1;
             else
@@ -43,7 +46,9 @@ void makeMove(Chess *chess, int x1, int x2)
             {
 
                 chess->board[x1+1] = chess->board[x2];
+                chess->board[x1+1].hasMoved = 1;
                 chess->board[x1+2] = chess->board[x1];
+                chess->board[x1+2].hasMoved = 1;
 
                 chess->board[x1].type = NONE;
                 chess->board[x2].type = NONE;
@@ -53,6 +58,9 @@ void makeMove(Chess *chess, int x1, int x2)
             {
                 chess->board[x1-1] = chess->board[x2];
                 chess->board[x1-2] = chess->board[x1];
+                chess->board[x1-1].hasMoved =  1;
+                chess->board[x1-2].hasMoved = 1;
+
 
                 chess->board[x1].type = NONE;
                 chess->board[x2].type = NONE;
@@ -90,7 +98,7 @@ void makeMoveStats(Chess *chess, int x1, int x2)
     //printf("start : %i\n",x1);
     //printf("end : %i\n",x2);
     //printf("piece %i\n", chess->board[x1].type);
-    if(legalMoves(chess->board, x1, x2, chess->board[x1]))
+    if(legalMoves(*chess, x1, x2, chess->check))
     {
         if(chess->board[x2].type == 0)
 	{

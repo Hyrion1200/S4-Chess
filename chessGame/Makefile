@@ -3,11 +3,11 @@
 #
 bin = Chess.exe
 
-SRC = main.c piece.c validMoves.c board.c moves.c visual.c AI/movesGen.c AI/chessAI.c 
+SRC = main.c piece.c validMoves.c board.c moves.c visual.c AI/movesGen.c AI/chessAI.c uci.c stats.c
 
 CC= gcc -fsanitize=address
 CPPFLAGS=
-CFLAGS= -Wall -Wextra -fsanitize=address
+CFLAGS= -Wall -Wextra -fsanitize=address -g
 LDFLAGS= -lm
 LDLIBS=
 

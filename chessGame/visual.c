@@ -25,13 +25,13 @@ void printBoard(Piece* bd)
             printf("P | ");
 
         if(bd[i].type == 2)
-            printf("R | ");
+            printf("N | ");
 
         if(bd[i].type == 3)
             printf("B | ");
 
         if(bd[i].type == 4)
-            printf("N | ");
+            printf("R | ");
 
         if(bd[i].type == 5)
             printf("Q | ");
@@ -48,13 +48,13 @@ void printBoard(Piece* bd)
                 printf("p | ");
 
             if(bd[i].type == 2)
-                printf("r | ");
+                printf("n | ");
 
             if(bd[i].type == 3)
                 printf("b | ");
 
             if(bd[i].type == 4)
-                printf("n | ");
+                printf("r | ");
 
             if(bd[i].type == 5)
                 printf("q | ");

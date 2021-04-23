@@ -80,7 +80,7 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
             {
                 for(int i = start+1; i < end; i++)
                 {
-                    if(board[i].type != NONE)
+                    if(board[i].type != NONE || i % 8 == 7)
                         return 0;
                 }
             }
@@ -88,7 +88,7 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
             {
                 for(int i = start-1; i > end; i--)
                 {
-                    if(board[i].type != NONE)
+                    if(board[i].type != NONE || i % 8 == 0)
                         return 0;
                 }
             }
@@ -102,8 +102,6 @@ int rookLegal(int start, int end, int dir, struct Piece* board)
 
 int bishopMoves(int start,int end)
 {
-    int n = 1;
-
     int b1 = 1;
     int b2 = 1;
     int b3 = 1;
@@ -384,109 +382,204 @@ int kingMoves(int start, int end)
 
     if(start - MAX_RANK + 1 == end || start - MAX_RANK - 1 == end)
         return 1;
-
+    if(start + 3 == end || start - 4 == end)
+        return 2;
     return 0;
 }
 
-int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
+int castleLegal(Chess chess, int start, int end)
+{
+    if(chess.board[start].hasMoved || chess.board[end].hasMoved ||
+            (chess.board[start].color != chess.board[end].color) ||
+            chess.check)
+        return 0;
+    if(end > start) // Castle King side
+    {
+        if(chess.board[start+1].type != NONE || chess.board[start+2].type != NONE)
+            return 0;
+        return squareGeneration(chess,start+1,start) == 0 &&
+            squareGeneration(chess,start+2,start) == 0;
+    }
+    else // Castle Queen side
+    {
+        if(chess.board[start-1].type != NONE ||
+                chess.board[start-2].type != NONE ||
+                chess.board[start-3].type != NONE)
+            return 0;
+        return squareGeneration(chess,start-1,start) == 0 &&
+            squareGeneration(chess,start-2,start) == 0;
+    }
+}
+
+
+int pawnLegal(Piece* board, int r, int start, int end)
+{
+    if (r != 0)
+    {
+        if(r == 3)
+        {
+            //printf("start : %i and end %i\n",start,end);
+            if(board[start].color == BLACK)
+            {
+                if(start + MAX_RANK + 1 == end)
+                {
+                    if(board[start + MAX_RANK + 1].type != NONE &&
+                            start % 8 != 7)
+                        return 1;
+
+                }
+                if(start + MAX_RANK - 1 == end)
+                {
+                    if(board[start + MAX_RANK - 1].type != NONE &&
+                            start % 8 != 0)
+                        return 1;
+                }
+            }
+            else
+            {
+                if(start - MAX_RANK + 1 == end)
+                {
+                    if(board[start - MAX_RANK + 1].type != NONE &&
+                            start % 8 != 7)
+                        return 1;
+                }
+                if(start - MAX_RANK - 1 == end)
+                {
+                    if(board[start - MAX_RANK - 1].type != NONE &&
+                            start % 8 != 0)
+                        return 1;
+                }
+
+            }
+            return 0;
+        }
+        if(board[start].color == WHITE)
+        {
+            if (r == 1)
+            {
+                if(board[start - MAX_RANK].type == NONE)
+                    return 1;
+            }
+            if(r == 2)
+            {
+                if(board[start - MAX_RANK].type == NONE &&
+                        board[start - 2*MAX_RANK].type == NONE)
+                    return 1;
+            }
+        }
+        else
+        {
+            if (r == 1)
+            {
+                if(board[start + MAX_RANK].type == NONE)
+                    return 1;
+            }
+            if(r == 2)
+            {
+                if(board[start + MAX_RANK].type == NONE &&
+                        board[start + 2*MAX_RANK].type == NONE)
+                    return 1;
+            }
+        }
+        return 0;
+    }
+    return 0;
+}
+
+int tryMove(Chess chess, int x1, int x2)
+{
+    if(chess.board[x2].type == 0)
+    {
+        chess.board[x2].type = chess.board[x1].type;
+        chess.board[x2].color = chess.board[x1].color;
+        chess.board[x2].hasMoved = 1;
+        chess.board[x1].type = 0;
+    }
+    else
+    if(chess.board[x1].type == KING && chess.board[x2].type == ROOK &&
+                !chess.board[x1].hasMoved && !chess.board[x2].hasMoved)
+    {
+
+        if(x2 > x1) // Castle Kingside
+        {
+
+            chess.board[x1+1] = chess.board[x2];
+            chess.board[x1+1].hasMoved = 1;
+            chess.board[x1+2] = chess.board[x1];
+            chess.board[x1+2].hasMoved = 1;
+
+            chess.board[x1].type = NONE;
+            chess.board[x2].type = NONE;
+
+        }
+        else // Castle Queenside
+        {
+            chess.board[x1-1] = chess.board[x2];
+            chess.board[x1-2] = chess.board[x1];
+            chess.board[x1-1].hasMoved =  1;
+            chess.board[x1-2].hasMoved = 1;
+
+
+            chess.board[x1].type = NONE;
+            chess.board[x2].type = NONE;
+        }
+    }
+    else
+    if(chess.board[x2].type != 0 && chess.board[x2].color != chess.board[x1].color)
+    {
+        chess.board[x2].type = chess.board[x1].type;
+        chess.board[x2].color = chess.board[x1].color;
+        chess.board[x2].hasMoved = 1;
+        chess.board[x1].type = 0;
+    }
+    //printf("check after move : %i \n",check(chess,chess.board[x2].color));
+    return check(chess,chess.board[x2].color);
+}
+
+int legalMoves(Chess chess,int start, int end, int check)
 {
     int dir;
     int r;
+    int canCastle;
+    struct Piece* board = chess.board;
     //if((board[start].color == board[end].color && board[end].type == NONE) && piece.type != KING)
-     //   return 0;
+    //   return 0;
     if(board[start].type != NONE && board[end].type != NONE)
     {
-        if(board[start].color == board[end].color)
+        if(board[start].color == board[end].color &&
+                !(board[start].type == KING && board[end].type == ROOK))
             return 0;
     }
-    switch(piece.type)
+
+
+
+    switch(board[start].type)
     {
         case PAWN:
-            r = pawnMoves(start,end,piece);
-            if (r != 0)
-            {
-                if(r == 3)
-                {
-                    //printf("start : %i and end %i\n",start,end);
-                    if(piece.color == BLACK)
-                    {
-                        if(start + MAX_RANK + 1 == end)
-                        {
-                            if(board[start + MAX_RANK + 1].type != NONE &&
-                                    start % 8 != 7)
-                                return 1;
-
-                        }
-                        if(start + MAX_RANK - 1 == end)
-                        {
-                            if(board[start + MAX_RANK - 1].type != NONE &&
-                                    start % 8 != 0)
-                                return 1;
-                        }
-                    }
-                    else
-                    {
-                        if(start - MAX_RANK + 1 == end)
-                        {
-                            if(board[start - MAX_RANK + 1].type != NONE &&
-                                    start % 8 != 7)
-                                return 1;
-                        }
-                        if(start - MAX_RANK - 1 == end)
-                        {
-                            if(board[start - MAX_RANK - 1].type != NONE &&
-                                    start % 8 != 0)
-                                return 1;
-                        }
-
-                    }
-                    return 0;
-                }
-                if(piece.color == WHITE)
-                {
-                    if (r == 1)
-                    {
-                        if(board[start - MAX_RANK].type == NONE)
-                            return 1;
-                    }
-                    if(r == 2)
-                    {
-                        if(board[start - MAX_RANK].type == NONE &&
-                                board[start - 2*MAX_RANK].type == NONE)
-                            return 1;
-                    }
-                }
-                else
-                {
-                    if (r == 1)
-                    {
-                        if(board[start + MAX_RANK].type == NONE)
-                            return 1;
-                    }
-                    if(r == 2)
-                    {
-                        if(board[start + MAX_RANK].type == NONE &&
-                                board[start + 2*MAX_RANK].type == NONE)
-                            return 1;
-                    }
-                }
+            r = pawnMoves(start,end,board[start]);
+            dir = pawnLegal(chess.board,r,start,end);
+            if(dir == 0)
                 return 0;
-            }
-            return 0;
             break;
 
         case KNIGHT:
-            return knightMoves(start,end);
+            dir = knightMoves(start,end);
+            if(dir == 0)
+                return 0;
             break;
 
         case BISHOP:
             dir = bishopMoves(start,end);
-            return bishopLegal(start,end,dir,board);
+            dir = bishopLegal(start,end,dir,board);
+            if(dir == 0)
+                return 0;
             break;
 
         case ROOK:
             dir = rookMoves(start,end);
-            return rookLegal(start,end,dir,board);
+            dir = rookLegal(start,end,dir,board);
+            if(dir == 0)
+                return 0;
             break;
 
         case QUEEN:
@@ -495,20 +588,60 @@ int legalMoves(struct Piece board[],int start, int end, struct Piece piece)
             //r = rookLegal(start,end,dir,board);
             //printf("start %i, end %i\n",start,end);
             //printf("dir : %i\n",dir);
-            return dir;
+            if(dir == 0)
+                return 0;
             break;
 
         case KING:
             dir = kingMoves(start,end);
-            if(squareGeneration(board,end,start))
-                // cannot go on attacked square // self check
-                return 0;
-            return dir;
+            canCastle = 0;
+            if(dir == 2)
+            {
+                if(chess.turn && !chess.BC && !chess.check)
+                    canCastle = 1;
+                if(!chess.turn && !chess.WC && !chess.check)
+                    canCastle = 1;
+            }
+            if(dir == 1)
+            {
+                if(squareGeneration(chess,end,start))
+                    // cannot go on attacked square // self check
+                    return 0;
+                break;
+            }
+            if(dir == 2 && !board[start].hasMoved && canCastle)
+            {
+                dir = castleLegal(chess,start,end);
+                if(dir == 0)
+                    return 0;
+                break;
+            }
+            return 0;
+            break;
 
         case NONE:
             break;
     }
-    return 0;
+
+    if(check)
+    {
+        printf("I'm checked !\n");
+        Chess* cs = malloc(sizeof(Chess));
+        cs->check = chess.check;
+        cs->BC = chess.BC;
+        cs->WC = chess.WC;
+        Piece* bd = malloc(64*sizeof(Piece));
+        for(int i = 0; i < 64; i++)
+            bd[i] = chess.board[i];
+        cs->board = bd;
+
+        check = tryMove(*cs,start,end);
+        if(check)
+            return 0;
+        free(cs);
+        free(bd);
+    }
+    return 1;
 }
 
 int checkmate(Chess* chess)
@@ -536,14 +669,23 @@ int checkmate(Chess* chess)
     return 1;
 }
 
-int check(Chess* chess, int wk, int bk)
+int check(Chess chess, int color)
 {
     for(int i = 0; i < 64; i++)
     {
-        if(chess->board[i].type != NONE && chess->board[i].color != chess->turn)
+        if(chess.board[i].type == KING && (int)chess.board[i].color == color)
         {
-            //if(legalMoves(chess->board,))
+            //printf("pos of king %i  and current check : %i\n",i,chess.check);
+            if(squareGeneration(chess,i,i))
+            {
+                return 1;
+            }
         }
     }
-    return 1;
+    return 0;
+}
+
+void updateChess(Chess* chess)
+{
+    chess->check = check(*chess,chess->turn);
 }

@@ -10,12 +10,13 @@ int pawnMoves(int start, int end, struct Piece pawn);
 
 int knightMoves(int start, int end); // same
 
-int queenMoves(int start, int end, Piece* board); // same
+int queenMoves(int start, int end,struct Piece* board); // same
 
 int kingMoves(int start, int end); // return 1 if the move CAN be legal, 0 otherwise
                                    // return 2 if castle
                                    //
-int legalMoves(struct Piece* board, int start, int end, struct Piece piece);
+int legalMoves(Chess chess, int start, int end, int check);
 
 int checkmate(Chess *chess); // Return true if the board is checkmate
+int check(Chess chess, int color);
 #endif

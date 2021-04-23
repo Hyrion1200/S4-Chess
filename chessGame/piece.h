@@ -6,9 +6,9 @@ enum Type
 {
     NONE = 0,
     PAWN,
-    ROOK,
-    BISHOP,
     KNIGHT,
+    BISHOP,
+    ROOK,
     QUEEN,
     KING,
 };

@@ -2,6 +2,8 @@
 #define BOARD_H
 
 struct Piece* board();
+struct Piece* boardBishop();
+struct Piece* boardCastle();
 void free_board(struct Piece* board);
 
 typedef struct Chess
@@ -11,6 +13,7 @@ typedef struct Chess
     int turn;
     int WC; // White Castle
     int BC; // Black Castle
+    int check;
 }Chess;
 
 

@@ -11,8 +11,6 @@
 
 Move* movesGeneration(Chess chess, int *size)
 {
-    int nbP = 0;
-    int nbN = 0;
     Move* moves = malloc(MAX_MOVE*sizeof(Move));
 
     for(int i = 0; i < 64; i++)
@@ -23,19 +21,8 @@ Move* movesGeneration(Chess chess, int *size)
             int start = i;
             for(int j = 0; j < 64; j++)
             {
-                if(legalMoves(chess.board,start,j,p) && i != j )
+                if(legalMoves(chess,start,j,chess.check) && i != j )
                 {
-                    if(p.type == PAWN)
-                        nbP += 1;
-                    if(p.type == KNIGHT)
-                    {
-                        nbN += 1;
-                        //printf("move start %i and end %i\n",i,j);
-                    }
-                    /*if(p.type != PAWN && p.type != KNIGHT)
-                    {
-                        printf("start : %i and end %i\n",i,j);
-                    }*/
                     Move new = initMove();
                     new.start = start;
                     new.end = j;
@@ -52,7 +39,7 @@ Move* movesGeneration(Chess chess, int *size)
     return moves;
 }
 
-int squareGeneration(Piece* board, int square, int preMove)
+int squareGeneration(Chess chess, int square, int preMove)
 {
     // how many pieces except the one who should go on square
     // can go on square
@@ -61,11 +48,11 @@ int squareGeneration(Piece* board, int square, int preMove)
 
     for(int i = 0; i < 64; i++)
     {
-        if(board[i].color != board[preMove].color)
+        if(chess.board[i].color != chess.board[preMove].color)
         {
-            if(board[i].type != NONE && i != preMove && board[i].type != KING)
+            if(chess.board[i].type != NONE && i != preMove && chess.board[i].type != KING)
             {
-                if(legalMoves(board,i,square,board[i]))
+                if(legalMoves(chess,i,square,0))
                 {
                     nb++;
                 }
@@ -74,6 +61,7 @@ int squareGeneration(Piece* board, int square, int preMove)
     }
     return nb;
 }
+
 
 
 //old
