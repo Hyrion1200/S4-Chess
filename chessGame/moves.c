@@ -1,4 +1,5 @@
 #include "moves.h"
+#include "visual.h"
 #include "piece.h"
 #include "validMoves.h"
 #include <stdio.h>
@@ -76,10 +77,10 @@ void makeMove(Chess *chess, int x1, int x2)
 	    chess->board[x1].type = 0;
         }
     }
-
     else
     {
-        printf("Illegal move");
+        //printBoard(chess->board);
+        //printf("Illegal move, start %i, end %i ; type %i\n",x1,x2,chess->board[x1].type);
     }
 }
 
@@ -150,5 +151,6 @@ void makeMoveStats(Chess *chess, int x1, int x2)
         printf("Illegal move");
     }
 }
+
 
 

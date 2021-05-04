@@ -134,7 +134,7 @@ const int kingstable[64] = {
      20, 20,  0,  0,  0,  0, 20, 20,
      20, 30, 10,  0,  0, 10, 30, 20};
 // end of region table
-int minmax(Chess *chess, int isWhite, int depth, int alpha, int beta, long* nodes)
+int minmax(Chess *chess, int isWhite, int depth, int alpha, int beta, long long* nodes)
 {
     if (depth == 0)
     {
@@ -179,7 +179,7 @@ int minmax(Chess *chess, int isWhite, int depth, int alpha, int beta, long* node
     return alpha;
 }
 
-int negamax(Chess *chess,int depth, long* nodes)
+int negamax(Chess *chess,int depth, long long * nodes)
 {
     if (depth == 0)
     {
@@ -190,7 +190,10 @@ int negamax(Chess *chess,int depth, long* nodes)
         }
         if(chess->BC)
             bonus -= 50;
-
+        if(chess->check && chess->turn)
+            bonus += 35;
+        if(chess->check && !chess->turn)
+            bonus -= 35;
         return evaluateBoard(chess->board,bonus);
     }
     int size = 0;
@@ -327,20 +330,21 @@ Move selectMove(Chess *chess, int depth, int alpha, int beta)
     Move bestMove = initMove();
     bestMove.value = -INF;
     int size = 0;
-    long nodes = 0;
+    long long nodes = 0;
     // generate moves
     Move* moves = movesGeneration(*chess,&size);
     printf("Number of moves : %i\n",size);
     nodes += size;
     for (int i = 0; i < size; i++)
     {
-        printf(" %i |",chess->board[moves[i].start].type);
-        /*if(chess->board[moves[i].start].type == 3)
-            printf(" start : %i and end %i |||",moves[i].start,moves[i].end);
 
+        printf(" %i |",chess->board[moves[i].start].type);
+        /*if(chess->board[moves[i].start].type == 2)
+            printf(" start : %i and end %i |||\n",moves[i].start,moves[i].end);
+        */
         if(chess->board[moves[i].start].type == 6)
             printf(" start : %i and end %i |||", moves[i].start,moves[i].end);
-        */
+
         Chess *chessCpy = malloc(sizeof(Chess));
         Piece* bdCpy = malloc(64*sizeof(Piece));
         memcpy(bdCpy,chess->board,64*sizeof(Piece));
@@ -366,7 +370,7 @@ Move selectMove(Chess *chess, int depth, int alpha, int beta)
             break;*/
     }
     free(moves);
-    printf("\nnodes parcourues : %ld\n",nodes);
+    printf("\nnodes parcourues : %lld\n",nodes);
     printf("move start : %i and end : %i with value %i\n",bestMove.start,bestMove.end,bestMove.value);
     return bestMove;
 
@@ -387,6 +391,7 @@ int perft(Chess* chess, int depth)
         memcpy(bdCpy,chess->board,64*sizeof(Piece));
         memcpy(chessCpy,chess,sizeof(Chess));
 
+        //printf("In Perft : %i\n", moves[i].value);
         chessCpy->board = bdCpy;
         makeMove(chessCpy,moves[i].start,moves[i].end);
         chessCpy->check = check(*chessCpy,chessCpy->turn);

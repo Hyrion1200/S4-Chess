@@ -45,14 +45,15 @@ int squareGeneration(Chess chess, int square, int preMove)
     // can go on square
 
     int nb = 0;
-
+    chess.turn = !chess.turn;
     for(int i = 0; i < 64; i++)
     {
         if(chess.board[i].color != chess.board[preMove].color)
         {
             if(chess.board[i].type != NONE && i != preMove && chess.board[i].type != KING)
             {
-                if(legalMoves(chess,i,square,0))
+
+                if(legalMoves(chess,i,square,chess.check))
                 {
                     nb++;
                 }

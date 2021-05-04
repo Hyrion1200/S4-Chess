@@ -1,4 +1,6 @@
 #include "piece.h"
+#include "visual.h"
+#include <string.h>
 #include "board.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -79,6 +81,137 @@ struct Piece* boardCastle()
     bd[63].type = ROOK;
     bd[63].color = WHITE;
 
+    return bd;
+}
+
+struct Piece* board2()
+{
+    struct Piece* bd = malloc(64* sizeof(struct Piece));
+    for(int i = 0; i < 64; i++)
+        createPiece(bd,i,NONE,BLACK);
+    bd[0].type = ROOK;
+    bd[4].type = KING;
+    bd[7].type = ROOK;
+    bd[8].type = PAWN;
+    bd[10].type = PAWN;
+    bd[11].type = PAWN;
+    bd[12].type = QUEEN;
+    bd[13].type = PAWN;
+    bd[14].type = BISHOP;
+    bd[16].type = BISHOP;
+    bd[17].type = KNIGHT;
+    bd[20].type = PAWN;
+    bd[21].type = KNIGHT;
+    bd[22].type = PAWN;
+    bd[33].type = PAWN;
+    bd[47].type = PAWN;
+
+    bd[27].type = PAWN;
+    bd[27].color = WHITE;
+    bd[28].type = KNIGHT;
+    bd[28].color = WHITE;
+    bd[36].type = PAWN;
+    bd[36].color = WHITE;
+
+    bd[42].type = KNIGHT;
+    bd[42].color = WHITE;
+    bd[45].type = QUEEN;
+    bd[48].type = PAWN;
+    bd[49].type = PAWN;
+    bd[50].type = PAWN;
+    bd[51].type = BISHOP;
+    bd[52].type = BISHOP;
+    bd[53].type = PAWN;
+    bd[54].type = PAWN;
+    bd[55].type = PAWN;
+    bd[56].type = ROOK;
+    bd[60].type = KING;
+    bd[63].type = ROOK;
+    for(int i = 42; i < 64; i++)
+        bd[i].color = WHITE;
+    bd[47].color = BLACK;
+
+    return bd;
+}
+
+int charToDigit(char c)
+{
+    return c - '0';
+}
+
+struct Piece* fenBoard(char* fen)
+{
+    struct Piece* bd = malloc(64* sizeof(struct Piece));
+    for(int i = 0; i < 64; i++)
+        createPiece(bd,i,NONE,BLACK);
+    int l = strlen(fen);
+    int i = 0;
+    for(int s = 0; s < l; s++)
+    {
+        int val = charToDigit(fen[s]);
+        if(val > 0 && val < 9)
+            i += charToDigit(fen[s]);
+
+        switch(fen[s])
+        {
+            case 'p':
+                bd[i].type = PAWN;
+                i++;
+                break;
+            case 'n':
+                bd[i].type = KNIGHT;
+                i++;
+                break;
+            case 'b':
+                bd[i].type = BISHOP;
+                i++;
+                break;
+            case 'r':
+                bd[i].type = ROOK;
+                i++;
+                break;
+            case 'q':
+                bd[i].type = QUEEN;
+                i++;
+                break;
+            case 'k':
+                bd[i].type = KING;
+                i++;
+                break;
+            case 'P':
+                bd[i].type = PAWN;
+                bd[i].color = WHITE;
+                i++;
+                break;
+            case 'N':
+                bd[i].type = KNIGHT;
+                bd[i].color = WHITE;
+                i++;
+                break;
+            case 'B':
+                bd[i].type = BISHOP;
+                bd[i].color = WHITE;
+                i++;
+                break;
+            case 'R':
+                bd[i].type = ROOK;
+                bd[i].color = WHITE;
+                i++;
+                break;
+            case 'Q':
+                bd[i].type = QUEEN;
+                bd[i].color = WHITE;
+                i++;
+                break;
+            case 'K':
+                bd[i].type = KING;
+                bd[i].color = WHITE;
+                i++;
+                break;
+            default:
+                break;
+        }
+    }
     return bd;
 }
 

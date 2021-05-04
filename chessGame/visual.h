@@ -1,8 +1,8 @@
 #ifndef VISUAL_H
 #define VISUAL_H
 
-void updateSquare(Piece* board, int start, int end);
+void updateSquare(struct Piece* board, int start, int end);
 
-void printBoard(Piece* board);
+void printBoard(struct Piece* board);
 
 #endif

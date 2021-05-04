@@ -4,6 +4,8 @@
 struct Piece* board();
 struct Piece* boardBishop();
 struct Piece* boardCastle();
+struct Piece* board2();
+struct Piece* fenBoard(char* fen);
 void free_board(struct Piece* board);
 
 typedef struct Chess

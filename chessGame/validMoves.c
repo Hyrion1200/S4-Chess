@@ -299,7 +299,7 @@ int pawnMoves(int start, int end, struct Piece pawn)
 
 int knightMoves(int start, int end)
 {
-    if(end > start) // prevent knight from doing weird movements
+    /*if(end > start) // prevent knight from doing weird movements
     {
         if(end - start < MAX_RANK)
             return 0;
@@ -308,7 +308,7 @@ int knightMoves(int start, int end)
     {
         if(start - end < MAX_RANK)
             return 0;
-    }
+    }*/
     // Critical positions
     int left = 1;
     int leftM = 1;
@@ -335,6 +335,8 @@ int knightMoves(int start, int end)
         down = 0;
     if(start >= 56)
         down = 0;
+
+    //printf("start %i ; end %i \n left %i , leftM %i, right %i, rightM %i\nup %i, upM %i, down %i, downM %i\n",start,end,left,leftM,right,rightM,up,upM,down,downM);
 
     if((start + 2*MAX_RANK + 1 == end && rightM && down)
             || (start + 2*MAX_RANK - 1 == end && leftM && down))
@@ -370,19 +372,36 @@ int queenMoves(int start, int end,Piece* board)
 
 int kingMoves(int start, int end)
 {
+    int left = 1;
+    int right = 1;
+    int up = 1;
+    int down = 1;
+    int castle = 0;
 
-    if(start + 1 == end || start - 1 == end)
+    if(start % 8 == 0)
+        left = 0;
+    if(start % 8 == 7)
+        right = 0;
+    if(start > 55)
+        down = 0;
+    if(start < 8)
+        up = 0;
+    if(start == 60 || start == 4)
+        castle = 1;
+    if((start + 1 == end && right ) || (start - 1 == end && left))
         return 1;
 
-    if(start + MAX_RANK == end || start - MAX_RANK == end)
+    if((start + MAX_RANK == end && down) || (start - MAX_RANK == end && up))
         return 1;
 
-    if(start + MAX_RANK + 1 == end || start + MAX_RANK - 1 == end)
+    if((start + MAX_RANK + 1 == end && down && right)
+            || (start + MAX_RANK - 1 == end && down && left))
         return 1;
 
-    if(start - MAX_RANK + 1 == end || start - MAX_RANK - 1 == end)
+    if((start - MAX_RANK + 1 == end && up && right)
+            || (start - MAX_RANK - 1 == end && up && left))
         return 1;
-    if(start + 3 == end || start - 4 == end)
+    if((start + 3 == end || start - 4 == end) && castle)
         return 2;
     return 0;
 }
@@ -597,9 +616,9 @@ int legalMoves(Chess chess,int start, int end, int check)
             canCastle = 0;
             if(dir == 2)
             {
-                if(chess.turn && !chess.BC && !chess.check)
+                if(!chess.turn && !chess.BC && !chess.check && start == 4)
                     canCastle = 1;
-                if(!chess.turn && !chess.WC && !chess.check)
+                if(chess.turn && !chess.WC && !chess.check && start == 60)
                     canCastle = 1;
             }
             if(dir == 1)
@@ -623,24 +642,21 @@ int legalMoves(Chess chess,int start, int end, int check)
             break;
     }
 
-    if(check)
-    {
-        printf("I'm checked !\n");
-        Chess* cs = malloc(sizeof(Chess));
-        cs->check = chess.check;
-        cs->BC = chess.BC;
-        cs->WC = chess.WC;
-        Piece* bd = malloc(64*sizeof(Piece));
-        for(int i = 0; i < 64; i++)
-            bd[i] = chess.board[i];
-        cs->board = bd;
+    //        printf("I'm checked !\n");
+    Chess* cs = malloc(sizeof(Chess));
+    cs->check = chess.check;
+    cs->BC = chess.BC;
+    cs->WC = chess.WC;
+    Piece* bd = malloc(64*sizeof(Piece));
+    for(int i = 0; i < 64; i++)
+        bd[i] = chess.board[i];
+    cs->board = bd;
 
-        check = tryMove(*cs,start,end);
-        if(check)
-            return 0;
-        free(cs);
-        free(bd);
-    }
+    check = tryMove(*cs,start,end);
+    if(check)
+        return 0;
+    free(cs);
+    free(bd);
     return 1;
 }
 

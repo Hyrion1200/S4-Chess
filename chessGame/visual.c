@@ -1,7 +1,7 @@
 #include "piece.h"
 #include <stdio.h>
 
-void updateSquare(Piece* board, int start, int end)
+void updateSquare(struct Piece* board, int start, int end)
 {
     //TODO
     //update board[start] and board[end]
@@ -10,7 +10,7 @@ void updateSquare(Piece* board, int start, int end)
     board[start].type = NONE;
 }
 
-void printBoard(Piece* bd)
+void printBoard(struct Piece* bd)
 {
     //TODO
     //print board regarding piece type and piece color

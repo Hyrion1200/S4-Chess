@@ -24,6 +24,14 @@ int main(int argc, char** argv)
     struct Piece* bd6 = board();
 
 
+/*    struct Piece* bd = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+//    struct Piece* bd = boardCastle();
+    struct Piece* bd2 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+    struct Piece* bd3 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+    struct Piece* bd4 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+    struct Piece* bd5 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+    struct Piece* bd6 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+*/
     Chess* chess = malloc(sizeof(Chess));
     Chess* chess2 = malloc(sizeof(Chess));
     Chess* chess3 = malloc(sizeof(Chess));
@@ -57,7 +65,7 @@ int main(int argc, char** argv)
     //int n = 0;
     if(atoi(argv[1]) == 0) //perf test
     {
-        //printBoard(chess->board);
+        printBoard(chess->board);
         printf("-----Perf test 1 ----------\n");
         Move mv = selectMove(chess,1,9999,-9999);
         makeMove(chess,mv.start,mv.end);
