@@ -1,7 +1,9 @@
 #include "uci.h"
+#include <stdio.h>
+#include "moves.h"
 #include <stdlib.h>
 
-#define SIZE 4
+#define SIZE 5
 
 char* intToUci(int start, int end)
 {
@@ -11,7 +13,7 @@ char* intToUci(int start, int end)
     result[1] = line(start);
     result[2] = column(end);
     result[3] = line(end);
-
+    result[4] = '\0';
     /*switch (type)
     {
         case PAWN:
@@ -27,9 +29,10 @@ char* intToUci(int start, int end)
         case KING:
             break;
     }*/
-
+    printf("C : result result : %s",result);
     return result;
 }
+
 
 char column(int x)
 {
@@ -55,24 +58,24 @@ char column(int x)
     return 'x'; // err should not happen;
 }
 
-int line(int y)
+char line(int y)
 {
     if(y < 8)
-        return 1;
+        return 8 + '0';
     else if(y < 16)
-        return 2;
+        return 7 + '0';
     else if(y < 24)
-        return 3;
+        return 6 + '0';
     else if(y < 32)
-        return 4;
+        return 5 + '0';
     else if(y < 40)
-        return 5;
+        return 4 + '0';
     else if(y < 48)
-        return 6;
+        return 3 + '0';
     else if(y < 56)
-        return 7;
+        return 2 + '0';
     else if(y < 64)
-        return 8;
+        return 1 + '0';
 
-    return 0; // err should not happen;
+    return 0 + '0'; // err should not happen;
 }

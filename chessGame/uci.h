@@ -3,6 +3,6 @@
 
 char* intToUci(int start, int end);
 char column(int x);
-int line(int y);
+char line(int y);
 
 #endif

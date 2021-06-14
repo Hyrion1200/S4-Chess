@@ -23,9 +23,8 @@ int main(int argc, char** argv)
     struct Piece* bd5 = board();
     struct Piece* bd6 = board();
 
-
-/*    struct Piece* bd = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
-//    struct Piece* bd = boardCastle();
+/*
+    struct Piece* bd = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
     struct Piece* bd2 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
     struct Piece* bd3 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
     struct Piece* bd4 = fenBoard("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");

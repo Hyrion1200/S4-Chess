@@ -196,6 +196,7 @@ int negamax(Chess *chess,int depth, long long * nodes)
             bonus -= 35;
         return evaluateBoard(chess->board,bonus);
     }
+
     int size = 0;
     Move* moves = movesGeneration(*chess,&size);
     *nodes += size;
@@ -342,9 +343,9 @@ Move selectMove(Chess *chess, int depth, int alpha, int beta)
         /*if(chess->board[moves[i].start].type == 2)
             printf(" start : %i and end %i |||\n",moves[i].start,moves[i].end);
         */
-        if(chess->board[moves[i].start].type == 6)
+        /*if(chess->board[moves[i].start].type == 6)
             printf(" start : %i and end %i |||", moves[i].start,moves[i].end);
-
+        */
         Chess *chessCpy = malloc(sizeof(Chess));
         Piece* bdCpy = malloc(64*sizeof(Piece));
         memcpy(bdCpy,chess->board,64*sizeof(Piece));
