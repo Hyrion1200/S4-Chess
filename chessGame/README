@@ -1,0 +1,6 @@
+Re-Compile the project using "make" or simply use the pre-existing binary
+
+1- You want to study from a FEN position "./chessEngine <FENSTRING>"
+
+2- You want to play against the bot on lichess "Play a game with a friend on lichess -> invite ekipChess"
+    -Start playing against a 4 depth search opponent and try to beat it
